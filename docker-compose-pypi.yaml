@@ -1,0 +1,6 @@
+services:
+    pypi-package:
+        build:
+            dockerfile: ./pypi/py.dockerfile
+            args:
+                tokenpypi: ${tokenpypi}
