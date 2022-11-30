@@ -2,11 +2,13 @@ FROM python:3.7.15-alpine3.16
 
 COPY pypi/createpypi.sh /tmp
 
-RUN apk update && apk add --no-cache gcc twine
+RUN apk update && apk add --no-cache git gcc twine
 
-WORKDIR /usr/local/lib/python3.7/site-packages/pkg_resources/tests/data/my-test-package-source/
+ARG GITHUB_REPO_URL_WITH_CREDENTIALS
 
-RUN sed -i 's/name="my-test-package",/name="DevOpsdeustest2022",/g' /usr/local/lib/python3.7/site-packages/pkg_resources/tests/data/my-test-package-source/setup.py
+RUN git clone "$GITHUB_REPO_URL_WITH_CREDENTIALS" /etc/app_data/
+
+WORKDIR /etc/app_data/pip_packages/pipa_utils_package
 
 RUN python3 setup.py bdist_wheel
 
@@ -16,6 +18,6 @@ ARG tokenpypi
 RUN sh createpypi.sh ${tokenpypi}
 RUN mv .pypirc ~/
 
-WORKDIR /usr/local/lib/python3.7/site-packages/pkg_resources/tests/data/my-test-package-source/
+WORKDIR /etc/app_data/pip_packages/pipa_utils_package
 
-RUN twine upload dist/*
+RUN twine upload --skip-existing dist/*
