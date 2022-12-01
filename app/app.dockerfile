@@ -10,9 +10,7 @@ RUN git clone "$GITHUB_REPO_URL_WITH_CREDENTIALS" /etc/app_data/
 
 RUN pip install -r /etc/app_data/video_club/requirements.txt --no-cache-dir
 
-RUN sed -i 's/"HOST": "video-club-postgres",/"HOST": "db"/g' /etc/app_data/video_club/video_club/settings.py
-
-RUN sed -i 's/"PORT": ""/"PORT": "5432"/g' /etc/app_data/video_club/video_club/settings.py
+RUN sed -i 's/"HOST": "video-club-postgres",/"HOST": "db",/g' /etc/app_data/video_club/video_club/settings.py
 
 WORKDIR /etc/app_data/video_club
 
